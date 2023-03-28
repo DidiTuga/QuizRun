@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">QuizRun</string>
+    <string name="Str_Start">Start</string>
+    <string name="Str_pedalar">PEDALA!</string>
+    <string name="Str_C">C</string>
+    <string name="Str_b">B</string>
+    <string name="Str_A">A</string>
+    <string name="Str_curso">Curso</string>
+    <string name="Str_Naluno">Nº Aluno</string>
+    <string name="Str_nome">Nome</string>
+    <string name="Str_submeter">Submeter</string>
+</resources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".KeyboardActivity"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="639dp"
+        android:layout_height="363dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5">
+
+        <TextView
+            android:id="@+id/Txt_texto"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="8dp"
+            android:autoSizeTextType="uniform"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/softblue" />
+
+        <EditText
+            android:id="@+id/Edt_Nome"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_marginBottom="5dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/edittext_background"
+            android:ems="10"
+            android:hint="@string/Str_nome"
+            android:inputType="textPersonName"
+            android:opacity="transparent"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+        <EditText
+            android:id="@+id/Edt_Curso"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/edittext_background"
+            android:ems="10"
+            android:hint="@string/Str_curso"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+        <EditText
+            android:id="@+id/Edt_Naluno"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/edittext_background"
+            android:ems="10"
+            android:hint="@string/Str_Naluno"
+            android:inputType="phone"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/Btn_submeter"
+            android:layout_width="205dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/custom_button"
+            android:padding="11dp"
+            android:text="@string/Str_submeter"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
