@@ -161,7 +161,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBluetoothManager = new BluetoothManager(this, mHandler, this);
         mBluetoothManager.connectToDevice(deviceName);
         if(mBluetoothManager.isConnected()){
-            mBluetoothManager.sendData("t");
+            // handler de 1,5 segundos para mandar o t
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mBluetoothManager.sendData("t");
+                }
+            }, 1500);
+
 
         }
 
