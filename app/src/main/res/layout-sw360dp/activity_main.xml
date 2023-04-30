@@ -9,27 +9,44 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/Btn_Start"
-        android:layout_width="205dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="276dp"
+        android:layout_width="250dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="285dp"
         android:autoSizeTextType="uniform"
         android:background="@drawable/custom_button"
         android:padding="9dp"
         android:text="@string/Str_Start"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintEnd_toStartOf="@+id/Btn_tabela"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="548dp"
-        android:layout_height="246dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="635dp"
+        android:layout_height="277dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/Btn_tabela"
+        android:layout_width="250dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="285dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custom_button"
+        android:padding="9dp"
+        android:text="@string/tabela"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/Btn_Start"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

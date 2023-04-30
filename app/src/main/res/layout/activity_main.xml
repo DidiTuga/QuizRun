@@ -7,28 +7,44 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/Btn_Start"
-        android:text="@string/Str_Start"
-        android:textColor="@color/white"
-        android:layout_width="205dp"
+        android:layout_width="255dp"
         android:layout_height="66dp"
-        android:layout_marginTop="296dp"
+        android:layout_marginTop="300dp"
         android:autoSizeTextType="uniform"
         android:background="@drawable/custom_button"
         android:padding="9dp"
+        android:text="@string/Str_Start"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/Btn_tabela"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/Btn_tabela"
+        android:layout_width="255dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="300dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/custom_button"
+        android:padding="9dp"
+        android:text="@string/tabela"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/Btn_Start"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="548dp"
-        android:layout_height="246dp"
-        android:layout_marginTop="36dp"
+        android:layout_width="594dp"
+        android:layout_height="272dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />

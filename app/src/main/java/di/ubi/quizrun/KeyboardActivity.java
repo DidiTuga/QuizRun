@@ -1,11 +1,9 @@
 package di.ubi.quizrun;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -13,15 +11,24 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
-public class KeyboardActivity extends AppCompatActivity implements View.OnClickListener{
+public class KeyboardActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     EditText edt_nome, edt_numero, edt_curso;
+    private void viewSettings(){
+        // colocar fullscreen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // retirar o titulo da action bar
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        // Deixar o ecra ligado
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,18 +41,22 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
         edt_nome = findViewById(R.id.Edt_Nome);
         edt_numero = findViewById(R.id.Edt_Naluno);
         edt_curso = findViewById(R.id.Edt_Curso);
-        // colocar fullscreen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // retirar o titulo da action bar
-        Objects.requireNonNull(getSupportActionBar()).hide();
+
+        viewSettings();
         // receber o texto do intent
         Intent intent = getIntent();
         String tempo = intent.getStringExtra("Tempo");
         String ponto = intent.getStringExtra("Pontos");
         String distancia = intent.getStringExtra("Distancia");
         // log para ver se o texto foi recebido
-        Uteis.MSG_Log( "Texto recebido: " + tempo + " Pontos: " + ponto + " Distancia: " + distancia);
-        textView.setText("Tempo: " + tempo  + " Distancia: " + distancia+ " Pontos: " + ponto);
+        Uteis.MSG_Log("Texto recebido: " + tempo + " Pontos: " + ponto + " Distancia: " + distancia);
+        textView.setText("Tempo: " + tempo + " Distancia: " + distancia + " Pontos: " + ponto);
+        SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);
+        prefs.registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
+            if (sharedPreferences.getBoolean("fechar_keyboard", false)){
+                finish();
+            }
+        });
 
     }
 
@@ -57,7 +68,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
                 String nome = edt_nome.getText().toString();
                 String numero = edt_numero.getText().toString();
                 String curso = edt_curso.getText().toString();
-                String resultado = nome + ";" + numero + ";" + curso;
+                String resultado = numero + ";" + nome + ";" + curso;
                 Uteis.MSG_Log("Resultado: " + resultado);
                 MainActivity.mBluetoothManager.sendData(resultado);
                 // janela de dialogo
@@ -68,7 +79,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
                 builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        resultIntent.putExtra("resultado", "Save");
+                        resultIntent.putExtra("resultado", "et");
                         setResult(RESULT_OK, resultIntent);
                         finish();
                     }
@@ -95,4 +106,14 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
         }
 
     }
+    public void onStop() {
+        super.onStop();
+        SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);
+        prefs.edit().putBoolean("fechar_keyboard", false).apply();
+        finish();
+    }
+
+
+
+
 }
