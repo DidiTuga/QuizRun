@@ -1,14 +1,11 @@
 package di.ubi.quizrun;
 
-import static androidx.core.app.ActivityCompat.startActivityForResult;
-
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 
@@ -30,8 +27,8 @@ public class BluetoothManager {
     private final Context mContext;
     private final UUID mUUID;
     private final Handler mHandler;
-    private BluetoothSocket mSocket;
     private final Activity mActivity;
+    private BluetoothSocket mSocket;
     private InputStream mInputStream;
     private OutputStream mOutputStream;
     private boolean mIsConnected;
@@ -65,6 +62,8 @@ public class BluetoothManager {
         if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.BLUETOOTH}, MY_PERMISSIONS_REQUEST_BLUETOOTH);
         }
+        // Verificar se o Bluetooth está ativo se não estiver ativo, ativar
+
         try {
             BluetoothDevice device_final = null;
             if (mAdapter.isEnabled()) {
@@ -93,6 +92,9 @@ public class BluetoothManager {
                     mIsConnected = true;
                     mDeviceName = device_final.getName();
                     startListening();
+                    // se estiver conectado, enviar mensagem para a MainActivity atraves do Handler
+                    String msg ="c";
+                    sendData(msg);
                 }
             } else {
                 Uteis.MSG(mContext, "Ative o bluetooth e faça a conexão ao dispositivo");
@@ -104,12 +106,13 @@ public class BluetoothManager {
     }
 
     // Envia dados para o dispositivo Bluetooth
-    public void sendData(String data) {
+    public synchronized void sendData(String data) {
         Uteis.MSG_Log("Tentar enviar data: " + data);
         while (!mIsConnected) {
             connectToDevice(MainActivity.deviceName);
         }
         try {
+
             mOutputStream.write(data.getBytes());
             mOutputStream.flush();
             Uteis.MSG_Log("Enviado data com sucesso!");
@@ -152,6 +155,7 @@ public class BluetoothManager {
     public void stopListening() {
         mIsConnected = false;
     }
+
     // Desconecta do dispositivo Bluetooth
     public void disconnect() {
         if (mIsConnected) {
@@ -169,6 +173,7 @@ public class BluetoothManager {
     public String getDeviceName() {
         return mDeviceName;
     }
+
     // Verifica se o dispositivo está conectado
     public boolean isConnected() {
         return mIsConnected;

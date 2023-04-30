@@ -19,6 +19,7 @@
     <color name="yellow">#FFFFFF00</color>
     <color name="orange">#FFFFA500</color>
     <color name="purple">#FF800080</color>
+    <color name="light_gray">#FFD3D3D3</color>
 
 
 </resources>

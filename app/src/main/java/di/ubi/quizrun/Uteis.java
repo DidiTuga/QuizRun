@@ -1,11 +1,8 @@
 package di.ubi.quizrun;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
 
 public class Uteis {
 
