@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.view.View;
 import android.view.WindowManager;
@@ -81,6 +82,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
                     public void onClick(DialogInterface dialogInterface, int i) {
                         resultIntent.putExtra("resultado", "et");
                         setResult(RESULT_OK, resultIntent);
+
                         finish();
                     }
                 });

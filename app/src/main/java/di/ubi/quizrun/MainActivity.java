@@ -29,7 +29,9 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int MESSAGE_READ = 23;
     public static final String pref_name = "pref_name";
-    public static String deviceName = "INSMAN";
+    //public static String deviceName = "INSMAN";
+
+    public static String deviceName = "BTBEE PRO";
 
     static BluetoothManager mBluetoothManager;
     private Animation animation;;
@@ -195,6 +197,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // faz algo com o resultado recebido
             Uteis.MSG_Log("Resultado_Keyboard: " + resultado);
             mBluetoothManager.sendData(resultado);
+            // handler de 1,5 segundos para mandar o t para atualizar a tabela
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mBluetoothManager.sendData("t");
+                }
+            }, 1500);
         } else if(requestCode == 2 && resultCode == RESULT_CANCELED){
             Uteis.MSG_Log("Resultado_Keyboard: Cancelado");
             setContentView(R.layout.activity_main);
