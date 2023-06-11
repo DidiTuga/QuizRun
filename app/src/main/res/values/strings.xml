@@ -1,13 +1,21 @@
 <resources>
     <string name="app_name">QuizRun</string>
-    <string name="Str_Start">Start</string>
+    <string name="Str_Start">Começar</string>
     <string name="Str_pedalar">PEDALA!</string>
-    <string name="Str_C">C</string>
-    <string name="Str_b">B</string>
-    <string name="Str_A">A</string>
+    <string name="Str_C" translatable="false">C</string>
+    <string name="Str_b" translatable="false">B</string>
+    <string name="Str_A" translatable="false">A</string>
     <string name="Str_curso">Curso</string>
     <string name="Str_Naluno">Nº Aluno</string>
     <string name="Str_nome">Nome</string>
     <string name="Str_submeter">Submeter</string>
     <string name="tabela">Classificações</string>
+    <string name="Str_Tempo">Tempo: %s Distancia: %s Pontos: %s</string>
+    <string name="Str_escolher">Escolha uma Linguagem</string>
+    <string name="todo">Mudar a linguagem</string>
+    <string-array name="linguagem">
+        <item>Português</item>
+        <item>Espanhol</item>
+        <item>Inglês</item>
+    </string-array>
 </resources>

@@ -1,15 +1,20 @@
 package di.ubi.quizrun;
 
+import static java.lang.Thread.sleep;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.Html;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -20,9 +25,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Locale;
 import java.util.Objects;
 
 
@@ -30,31 +38,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int MESSAGE_READ = 23;
     public static final String pref_name = "pref_name";
     //public static String deviceName = "INSMAN";
-
     public static String deviceName = "BTBEE PRO";
-
     static BluetoothManager mBluetoothManager;
-    private Animation animation;;
-
-    Button btnStart;
-    Button btnTabela;
-
+    Button btnStart, btnTabela;
+    FloatingActionButton btnLanguage;
+    private Animation animation;
     private int flag_quiz = 0;
     private int flag_keyboard = 0;
     private int i = 0;
 
-    private void initButton(){
+
+    @SuppressWarnings("deprecation")
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
+    }
+    private void initButton() {
 
         btnStart = findViewById(R.id.Btn_Start);
         btnStart.setOnClickListener(this);
-        btnTabela = findViewById(R.id.Btn_tabela);
+        btnTabela = findViewById(R.id.Btn_table);
         btnTabela.setOnClickListener(this);
         btnStart.setEnabled(true);
+        btnLanguage = findViewById(R.id.Btn_Language);
+        btnLanguage.setOnClickListener(this);
+    }
+    private void viewSettings() {
+        // colocar fullscreen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // retirar o titulo da action bar
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        // Deixar o ecra ligado
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     // iniciar o handler
     @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler(Looper.myLooper()) {
+    private final Handler mHandler = new Handler(Looper.myLooper()) {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MESSAGE_READ) {
@@ -68,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         setContentView(R.layout.activity_main);
                         // quando receber o S meter o botao disable
 
-                        if(flag_keyboard == 1){
+                        if (flag_keyboard == 1) {
                             flag_keyboard = 0;
                             SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
                             prefs.edit().putBoolean("fechar_keyboard", true).apply();
@@ -84,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         setContentView(R.layout.activity_run);
                         ImageView imageView = findViewById(R.id.run_gif);
                         imageView.startAnimation(animation);
-                        if (flag_quiz == 1){
+                        if (flag_quiz == 1) {
                             flag_quiz = 0;
                             Uteis.MSG_Log("FLAG QUIZ");
                             SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
@@ -115,15 +139,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         i++;
                         // vai receber a tabela de tempos
 
-                            String[] tabela = readMessage.split(";");
-                            SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
-                            SharedPreferences.Editor editor = prefs.edit();
-                            for (int j = 0; j < tabela.length; j++) {
-                                editor.putString(""+i + j, tabela[j]);
-                            }
-                            editor.apply();
+                        String[] tabela = readMessage.split(";");
+                        SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        for (int j = 0; j < tabela.length; j++) {
+                            editor.putString("" + i + j, tabela[j]);
+                        }
+                        editor.apply();
 
-                        if (i == 22){
+                        if (i == 22) {
                             i = 0;
                         }
                         break;
@@ -131,14 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     };
-    private void viewSettings(){
-        // colocar fullscreen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // retirar o titulo da action bar
-        Objects.requireNonNull(getSupportActionBar()).hide();
-        // Deixar o ecra ligado
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // iniciar o bluetooth
         mBluetoothManager = new BluetoothManager(this, mHandler, this);
         mBluetoothManager.connectToDevice(deviceName);
-        if(mBluetoothManager.isConnected()){
+        if (mBluetoothManager.isConnected()) {
             // handler de 1,5 segundos para mandar o t
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -204,10 +221,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mBluetoothManager.sendData("t");
                 }
             }, 1500);
-        } else if(requestCode == 2 && resultCode == RESULT_CANCELED){
+        } else if (requestCode == 2 && resultCode == RESULT_CANCELED) {
             Uteis.MSG_Log("Resultado_Keyboard: Cancelado");
             setContentView(R.layout.activity_main);
-        }else if(requestCode == 1 && resultCode == RESULT_CANCELED){
+        } else if (requestCode == 1 && resultCode == RESULT_CANCELED) {
             Uteis.MSG_Log("Resultado_Quiz: Cancelado");
             setContentView(R.layout.activity_run);
         }
@@ -220,16 +237,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Uteis.MSG_Log("Botão ativado");
                 mBluetoothManager.sendData("s");
                 break;
-            case R.id.Btn_tabela:
-                    Uteis.MSG_Log("Botão tabela ativado");
-                    Intent intent = new Intent(MainActivity.this, TableActivity.class);
-                    startActivity(intent);
-                    break;
+            case R.id.Btn_table:
+                Uteis.MSG_Log("Botão tabela ativado");
+                Intent intent = new Intent(MainActivity.this, TableActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.Btn_Language:
+                Uteis.MSG_Log("Botão linguagem ativado");
+                // pop up para escolher a linguagem
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                String title = getResources().getString(R.string.Str_escolher);
+                title = Html.fromHtml("<font color='#000055'>"+title+"</font>",Html.FROM_HTML_MODE_LEGACY).toString();
+                builder.setTitle(title);
+                String[] linguagens = getResources().getStringArray(R.array.linguagem);
+                builder.setItems(linguagens, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            // mudar a linguagem para português
+                            setLocale("pt");
+                            recreate();
+
+                        } else if (which == 1) {
+                            // mudar a linguagem para inglês
+                            setLocale("es");
+                            recreate();
+
+                        } else if (which == 2) {
+                            // mudar a linguagem para espanhol
+                            setLocale("en");
+                            recreate();
+                        }
+                    }
+                });
+                builder.create().show();
+                break;
             default:
                 Uteis.MSG_Log("Erro no comando recebido");
                 break;
 
         }
     }
+
+
+
 
 }

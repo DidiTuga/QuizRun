@@ -43,12 +43,12 @@ public class BluetoothManager {
         this.mActivity = mActivity;
     }
 
-    // Verifica se temos permissão para usar o Bluetooth
-    // Se não tiver, pede permissão
-    // Se tiver, inicia o processo de conexão ao dispositivo Bluetooth desejado
-    // O nome do dispositivo Bluetooth é passado como parâmetro
-    // E se o dispositivo não for encontrado, é mostrada uma mensagem de erro
-    // Se o dispositivo for encontrado, é iniciada a conexão onde cria um socket
+
+    /**
+     * Procurar por dispositivos Bluetooth pareados
+     *
+     * @param DeviceName
+     */
     public void connectToDevice(String DeviceName) {
         // Verificar se a permissão de acesso ao Bluetooth foi concedida
         if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
@@ -62,8 +62,6 @@ public class BluetoothManager {
         if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.BLUETOOTH}, MY_PERMISSIONS_REQUEST_BLUETOOTH);
         }
-        // Verificar se o Bluetooth está ativo se não estiver ativo, ativar
-
         try {
             BluetoothDevice device_final = null;
             if (mAdapter.isEnabled()) {
@@ -80,7 +78,6 @@ public class BluetoothManager {
                 }
                 if (device_final == null) {
                     Uteis.MSG(mContext, "Dispositivo não encontrado!");
-                    return;
                 } else {
                     mSocket = device_final.createRfcommSocketToServiceRecord(mUUID);
                     mSocket.connect();
@@ -93,10 +90,11 @@ public class BluetoothManager {
                     mDeviceName = device_final.getName();
                     startListening();
                     // se estiver conectado, enviar mensagem para a MainActivity atraves do Handler
-                    String msg ="c";
+                    String msg = "c";
                     sendData(msg);
                 }
             } else {
+
                 Uteis.MSG(mContext, "Ative o bluetooth e faça a conexão ao dispositivo");
             }
         } catch (IOException e) {

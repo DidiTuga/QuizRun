@@ -7,6 +7,21 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/Btn_Language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="331dp"
+        android:contentDescription="@string/todo"
+        android:src="@android:drawable/ic_menu_compass"
+        app:backgroundTint="@color/blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/Btn_Start"
@@ -19,13 +34,13 @@
         android:text="@string/Str_Start"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Btn_tabela"
+        app:layout_constraintEnd_toStartOf="@+id/Btn_table"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/Btn_tabela"
+        android:id="@+id/Btn_table"
         android:layout_width="255dp"
         android:layout_height="66dp"
         android:layout_marginTop="300dp"
