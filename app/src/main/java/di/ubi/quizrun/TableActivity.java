@@ -7,12 +7,14 @@ import android.view.WindowManager;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class TableActivity extends AppCompatActivity {
+    ArrayList<User> users;
+    RecyclerView recyclerView;
     private void viewSettings() {
         // colocar fullscreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -27,7 +29,10 @@ public class TableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         viewSettings();
         setContentView(R.layout.activity_table);
-        addTable();
+        recyclerView = findViewById(R.id.recycler_view);
+        initData();
+        initRecyclerView();
+
 
     }
 
@@ -35,47 +40,34 @@ public class TableActivity extends AppCompatActivity {
         finish();
     }
 
-    public void addTable() {
-        TableLayout table = findViewById(R.id.tableLayout);
+
+    private void initData() {
         SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);
-
-        // Data
-        for (int i = 1; i < 22; i++) {
-            TableRow row2 = new TableRow(this);
-            // padding
-            if (i == 1) {
-                row2.setBackgroundColor(getResources().getColor(R.color.blue));
+        users = new ArrayList<>();
+        for (int i = 1; i< 21;i++){
+            String pos = prefs.getString("" + i + 0, "");
+            String date = prefs.getString("" + i + 1, "");
+            String distancia = prefs.getString("" + i + 2, "");
+            String tempo = prefs.getString("" + i + 3, "");
+            String pontos = prefs.getString("" + i + 4, "");
+            String num = prefs.getString("" + i + 5, "");
+            String nome = prefs.getString("" + i + 6, "");
+            String curso = prefs.getString("" + i + 7, "");
+            if (pos.equals("1")){
+                pos = "primeiro";
+                curso = "Engenharia Informática";
+            }else if (pos.equals("2")){
+                pos = "segundo";
+            }else if (pos.equals("3")){
+                pos = "terceiro";
             }
-            for (int j = 0; j < 8; j++) {
-                TextView data = new TextView(this);
-                data.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-
-                if (i == 1) {
-                    data.setTextColor(getResources().getColor(R.color.white));
-                    // colocar no centro
-                    // colocar a negrito
-
-                } else if (i % 2 == 0) {
-                    data.setTextColor(getResources().getColor(R.color.black));
-                    row2.setBackgroundColor(getResources().getColor(R.color.light_gray));
-
-                } else {
-                    data.setTextColor(getResources().getColor(R.color.black));
-                    row2.setBackgroundColor(getResources().getColor(R.color.white));
-                }
-
-                // adicionar margem a cada celula
-                data.setPadding(20, 20, 20, 20);
-                //
-                data.setText(prefs.getString("" + i + j, ""));
-                // auumentar o tamanho do texto
-                data.setTextSize(17);
-                row2.addView(data);
-            }
-            table.addView(row2);
-            // table                     android:stretchColumns="*"
+            User user = new User(pos, date, distancia, tempo, pontos, num, nome, curso);
+            users.add(user);
         }
-
-
     }
+    private void initRecyclerView() {
+        UserAdapter adapter = new UserAdapter(users, this);
+        recyclerView.setAdapter(adapter);
+    }
+
 }

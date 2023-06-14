@@ -15,4 +15,7 @@
         <item>Español</item>
         <item>Inglés</item>
     </string-array>
+    <string name="Str_distancia">Distancia:</string>
+    <string name="str_tempoDemorado">Tiempo:</string>
+    <string name="str_pontos">"Puntuación: "</string>
 </resources>

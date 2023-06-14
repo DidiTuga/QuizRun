@@ -37,8 +37,8 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int MESSAGE_READ = 23;
     public static final String pref_name = "pref_name";
-    //public static String deviceName = "INSMAN";
-    public static String deviceName = "BTBEE PRO";
+    public static String deviceName = "INSMAN";
+    //public static String deviceName = "BTBEE PRO";
     static BluetoothManager mBluetoothManager;
     Button btnStart, btnTabela;
     FloatingActionButton btnLanguage;
@@ -47,16 +47,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int flag_keyboard = 0;
     private int i = 0;
 
-
-    @SuppressWarnings("deprecation")
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
-    }
     private void initButton() {
 
         btnStart = findViewById(R.id.Btn_Start);
@@ -145,9 +135,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         for (int j = 0; j < tabela.length; j++) {
                             editor.putString("" + i + j, tabela[j]);
                         }
+
                         editor.apply();
 
-                        if (i == 22) {
+                        if (i == 21) {
                             i = 0;
                         }
                         break;
@@ -156,6 +147,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+
+    // função para testar a leaderboard
+    private void guardarInfo(){
+        SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        for(int i = 1; i< 21; i++){
+            String teste = i+";23/01/21;213;01:12;21;45842;diogo;EI";
+            String[] tabela = teste.split(";");
+            for (int j = 0; j < tabela.length; j++) {
+                editor.putString("" + i + j, tabela[j]);
+            }
+
+        }
+        editor.apply();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // iniciar o button
         initButton();
         btnStart.setEnabled(false);
-
+        //guardarInfo();
         viewSettings();
         // animação do ciclista
         animation = new AlphaAnimation(1, 0); // Altera alpha de visível a invisível
@@ -255,17 +262,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             // mudar a linguagem para português
-                            setLocale("pt");
+                            Uteis.setLanguage(MainActivity.this,"pt");
                             recreate();
 
                         } else if (which == 1) {
                             // mudar a linguagem para inglês
-                            setLocale("es");
+                            Uteis.setLanguage(MainActivity.this,"es");
                             recreate();
 
                         } else if (which == 2) {
                             // mudar a linguagem para espanhol
-                            setLocale("en");
+                            Uteis.setLanguage(MainActivity.this,"en");
                             recreate();
                         }
                     }

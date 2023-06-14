@@ -53,7 +53,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
         // log para ver se o texto foi recebido
         Uteis.MSG_Log("Texto recebido: " + tempo + " Pontos: " + ponto + " Distancia: " + distancia);
         String texto = getString(R.string.Str_Tempo, tempo, distancia, ponto);
-        textView.setText("texto");
+        textView.setText(texto);
         SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);
         prefs.registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
             if (sharedPreferences.getBoolean("fechar_keyboard", false)) {
