@@ -10,7 +10,7 @@
     <string name="Str_nome">Nome</string>
     <string name="Str_submeter">Submeter</string>
     <string name="tabela">Classificações</string>
-    <string name="Str_Tempo">Tempo: %s Distancia: %s Pontos: %s</string>
+    <string name="Str_Tempo">Tempo: %s Distância: %s Pontos: %s</string>
     <string name="Str_escolher">Escolha uma Linguagem</string>
     <string name="todo" translatable="false">Mudar de Linguagem</string>
     <string name="Str_distancia">Distância:</string>

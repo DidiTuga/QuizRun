@@ -15,13 +15,13 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="331dp"
         android:contentDescription="@string/todo"
-        android:src="@android:drawable/ic_menu_compass"
-        app:backgroundTint="@color/blue"
+        android:src="@drawable/glob"
+        app:backgroundTint="@color/light_gray2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        />
+        tools:ignore="MissingConstraints" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/Btn_Start"
