@@ -4,17 +4,21 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:background="@color/softblue">
+    android:background="@color/white">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
+        app:cardCornerRadius="15dp"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/card"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/not_expandableLayout"
@@ -23,7 +27,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:padding="5dp">
+                android:padding="5dp"
+                >
                 <!-- TextView position  centrado verticalmente e encostado ao lado esquerdo-->
                 <TextView
                     android:id="@+id/txt_pos"
@@ -172,5 +177,5 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

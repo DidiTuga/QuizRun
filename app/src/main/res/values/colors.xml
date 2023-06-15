@@ -20,6 +20,12 @@
     <color name="orange">#FFFFA500</color>
     <color name="purple">#FF800080</color>
     <color name="light_gray">#FFD3D3D3</color>
+    <!-- whitesmoke -->
+    <color name="light_gray2">#FFF5F5F5</color>
+    <!-- 3 types of blue softblue with 75, 50, 25 opacity -->
+    <color name="softblue1">#BF00BFFF</color>
+    <color name="softblue2">#8000BFFF</color>
+    <color name="softblue3">#4000BFFF</color>
 
 
 </resources>

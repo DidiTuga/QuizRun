@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,17 +38,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH>{
             if (position == 0) {
                 holder.pos.setText("");
                 holder.pos.setBackgroundResource(R.drawable.priplace);
+                holder.cardLayout.setBackgroundColor(context.getResources().getColor(R.color.softblue1));
             } else if (position == 1) {
                 holder.pos.setText("");
                 holder.pos.setBackgroundResource(R.drawable.segplace);
+                holder.cardLayout.setBackgroundColor(context.getResources().getColor(R.color.softblue2));
             } else if (position == 2) {
                 holder.pos.setBackgroundResource(R.drawable.tercplace);
                 holder.pos.setText("");
+                holder.cardLayout.setBackgroundColor(context.getResources().getColor(R.color.softblue3));
             }
         } else {
             // colocar o numero da posicao e retirar o background
             holder.pos.setText(user.getPos());
             holder.pos.setBackgroundResource(0);
+            holder.cardLayout.setBackgroundColor(context.getResources().getColor(R.color.light_gray2));
         }
         holder.date.setText(user.getDate());
         holder.nome.setText(user.getNome());
@@ -58,7 +63,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH>{
         holder.distancia.setText(distancia);
         String tempo = context.getString(R.string.str_tempoDemorado)+" "  + user.getTempo();
         holder.tempo.setText(tempo);
-        String num = context.getString(R.string.Str_Naluno)+ " " + user.getNum();
+        String num = context.getString(R.string.Str_Naluno)+ ": " + user.getNum();
         holder.num.setText(num);
         String curso = context.getString(R.string.Str_curso)+": " + user.getCurso();
         holder.curso.setText(curso);
@@ -75,7 +80,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH>{
 
     class UserVH extends RecyclerView.ViewHolder{
         TextView pos, date, distancia, tempo, pontos, num, nome, curso;
-        ConstraintLayout expandableLayout, notExpandableLayout;
+        ConstraintLayout expandableLayout, notExpandableLayout, cardLayout;
         ImageView arrow, profile;
 
         public UserVH(@NonNull ViewGroup parent) {
@@ -92,6 +97,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH>{
             notExpandableLayout = parent.findViewById(R.id.not_expandableLayout);
             arrow = parent.findViewById(R.id.expandableButton);
             profile = parent.findViewById(R.id.IMG_profile);
+            cardLayout = parent.findViewById(R.id.card);
+
 
             notExpandableLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

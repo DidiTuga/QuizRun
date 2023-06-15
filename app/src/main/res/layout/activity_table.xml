@@ -16,11 +16,24 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="bold"
         android:layout_margin="10dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/softblue"
+        android:textSize="30sp"
+        app:layout_constraintStart_toEndOf="@id/IMG_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/recycler_view"
         />
+    <!-- ImageView para o botão de voltar -->
+    <ImageView
+        android:id="@+id/IMG_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:src="@drawable/back_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+<!-- Recycler View para a tabela -->
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -28,7 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_table_name"
+        app:layout_constraintTop_toBottomOf="@id/IMG_back"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 />
 

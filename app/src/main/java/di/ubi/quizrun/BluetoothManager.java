@@ -1,13 +1,17 @@
 package di.ubi.quizrun;
 
+import static java.lang.Thread.sleep;
+
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.provider.Settings;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -77,7 +81,10 @@ public class BluetoothManager {
                     }
                 }
                 if (device_final == null) {
-                    Uteis.MSG(mContext, "Dispositivo não encontrado!");
+                    Uteis.MSG(mContext, "Dispositivo não encontrado");
+                    sleep(1000);
+                    Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+                    mContext.startActivity(intent);
                 } else {
                     mSocket = device_final.createRfcommSocketToServiceRecord(mUUID);
                     mSocket.connect();
@@ -94,12 +101,16 @@ public class BluetoothManager {
                     sendData(msg);
                 }
             } else {
-
                 Uteis.MSG(mContext, "Ative o bluetooth e faça a conexão ao dispositivo");
+                sleep(1000);
+                Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+                mContext.startActivity(intent);
             }
         } catch (IOException e) {
             Uteis.MSG_Debug("Erro ao conectar com o dispositivo: " + e.getMessage());
             mIsConnected = false;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

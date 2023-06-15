@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -33,6 +34,14 @@ public class TableActivity extends AppCompatActivity {
         initData();
         initRecyclerView();
 
+        ImageView back = findViewById(R.id.IMG_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
     }
 
@@ -53,14 +62,7 @@ public class TableActivity extends AppCompatActivity {
             String num = prefs.getString("" + i + 5, "");
             String nome = prefs.getString("" + i + 6, "");
             String curso = prefs.getString("" + i + 7, "");
-            if (pos.equals("1")){
-                pos = "primeiro";
-                curso = "Engenharia Informática";
-            }else if (pos.equals("2")){
-                pos = "segundo";
-            }else if (pos.equals("3")){
-                pos = "terceiro";
-            }
+
             User user = new User(pos, date, distancia, tempo, pontos, num, nome, curso);
             users.add(user);
         }
