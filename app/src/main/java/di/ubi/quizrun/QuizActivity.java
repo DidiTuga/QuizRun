@@ -25,6 +25,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    /**
+     * Função para colocar a ecrã completo, retirar o titulo da action bar e deixar o ecra ligado
+     */
     private void viewSettings() {
         // colocar fullscreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

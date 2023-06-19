@@ -54,6 +54,7 @@ public class BluetoothManager {
      * @param DeviceName
      */
     public void connectToDevice(String DeviceName) {
+        mDeviceName = DeviceName;
         // Verificar se a permissão de acesso ao Bluetooth foi concedida
         if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, MY_PERMISSIONS_REQUEST_BLUETOOTH);
@@ -81,7 +82,7 @@ public class BluetoothManager {
                     }
                 }
                 if (device_final == null) {
-                    Uteis.MSG(mContext, "Dispositivo não encontrado");
+                    Uteis.MSG(mContext, "Dispositivo não encontrado, conecte-se ao dispositivo");
                     sleep(1000);
                     Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
                     mContext.startActivity(intent);
@@ -114,11 +115,12 @@ public class BluetoothManager {
         }
     }
 
+
     // Envia dados para o dispositivo Bluetooth
     public synchronized void sendData(String data) {
         Uteis.MSG_Log("Tentar enviar data: " + data);
         while (!mIsConnected) {
-            connectToDevice(MainActivity.deviceName);
+            connectToDevice(mDeviceName);
         }
         try {
 
@@ -153,7 +155,7 @@ public class BluetoothManager {
                         Uteis.MSG_Debug("Erro ao receber dados do dispositivo: " + e.getMessage());
                         mIsConnected = false;
                         // Tentar reconectar
-                        connectToDevice(MainActivity.deviceName);
+                        connectToDevice(mDeviceName);
                     }
                 }
             }
@@ -181,6 +183,42 @@ public class BluetoothManager {
 
     public String getDeviceName() {
         return mDeviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        mDeviceName = deviceName;
+    }
+
+    /**
+     * Função para dar return aos devices pareados
+     *
+     * @return Array de Strings com os nomes dos devices pareados
+     */
+    public String[] getpairedDevices() {
+        // Verificar se a permissão de acesso ao Bluetooth foi concedida
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, MY_PERMISSIONS_REQUEST_BLUETOOTH);
+        }
+        // bluetooth admin
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.BLUETOOTH_ADMIN}, MY_PERMISSIONS_REQUEST_BLUETOOTH);
+        }
+        // bluetooth
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.BLUETOOTH}, MY_PERMISSIONS_REQUEST_BLUETOOTH);
+        }
+        Set<BluetoothDevice> pairedDevices = mAdapter.getBondedDevices();
+
+        String[] pairedD = new String[pairedDevices.size()];
+        if (pairedDevices.size() > 0) {
+            Uteis.MSG_Log("Dispositivos pareados: " + pairedDevices.size());
+            for (int i = 0; i < pairedDevices.size(); i++) {
+                if (!pairedDevices.toArray()[i].equals(mDeviceName)) {
+                    pairedD[i] = pairedDevices.toArray()[i].toString();
+                }
+            }
+        }
+        return pairedD;
     }
 
     // Verifica se o dispositivo está conectado

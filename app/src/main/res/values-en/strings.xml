@@ -18,4 +18,7 @@
     <string name="Str_distancia">Distance:</string>
     <string name="str_tempoDemorado">Time:</string>
     <string name="str_pontos">"Score: "</string>
+    <string name="Str_definicoes">Settings</string>
+    <string name="Str_controlador">Choose a new Controller - The current one is %s</string>
+    <string name="Str_cancelar">Cancel</string>
 </resources>

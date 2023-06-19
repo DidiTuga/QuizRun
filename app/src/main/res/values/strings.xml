@@ -21,4 +21,7 @@
         <item>Espanhol</item>
         <item>Inglês</item>
     </string-array>
+    <string name="Str_definicoes">Definições</string>
+    <string name="Str_controlador">Escolha um novo Controlador  - O atual é %s</string>
+    <string name="Str_cancelar">Cancelar</string>
 </resources>

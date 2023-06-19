@@ -1,12 +1,8 @@
 package di.ubi.quizrun;
 
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.util.Log;
 import android.widget.Toast;
-
-import java.util.Locale;
 
 public class Uteis {
 
@@ -23,15 +19,7 @@ public class Uteis {
         //  Categoria -- Depois posso meteter Passo 3 ect
     }
 
-    public static void setLanguage(Context context, String languageCode) {
-        Locale locale = new Locale(languageCode);
-        Locale.setDefault(locale);
 
-        Resources resources = context.getResources();
-        Configuration config = resources.getConfiguration();
-        config.setLocale(locale);
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
-    }
 }
         /* Colocar a aplicacao em fullscreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

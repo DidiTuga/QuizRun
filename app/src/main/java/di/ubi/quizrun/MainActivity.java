@@ -1,7 +1,5 @@
 package di.ubi.quizrun;
 
-import static java.lang.Thread.sleep;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,39 +34,22 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int MESSAGE_READ = 23;
-    public static final String pref_name = "pref_name";
-    public static String deviceName = "INSMAN";
+    public static final String pref_name = "dataBase";
     //public static String deviceName = "BTBEE PRO";
-    static BluetoothManager mBluetoothManager;
+    @SuppressLint("StaticFieldLeak")
+    public static BluetoothManager mBluetoothManager;
+    public String deviceName;
     Button btnStart, btnTabela;
     FloatingActionButton btnLanguage;
     private Animation animation;
     private int flag_quiz = 0;
     private int flag_keyboard = 0;
-    private int i = 0;
-
-    private void initButton() {
-
-        btnStart = findViewById(R.id.Btn_Start);
-        btnStart.setOnClickListener(this);
-        btnTabela = findViewById(R.id.Btn_table);
-        btnTabela.setOnClickListener(this);
-        btnStart.setEnabled(true);
-        btnLanguage = findViewById(R.id.Btn_Language);
-        btnLanguage.setOnClickListener(this);
-    }
-    private void viewSettings() {
-        // colocar fullscreen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // retirar o titulo da action bar
-        Objects.requireNonNull(getSupportActionBar()).hide();
-        // Deixar o ecra ligado
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
 
     // iniciar o handler
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler(Looper.myLooper()) {
+        // variavel para contar o numero de jogadores so para ler os top 20
+        private int count_players = 0;
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MESSAGE_READ) {
@@ -126,20 +107,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         setContentView(R.layout.activity_main);
                         break;
                     default:
-                        i++;
+                        count_players++;
                         // vai receber a tabela de tempos
 
                         String[] tabela = readMessage.split(";");
                         SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         for (int j = 0; j < tabela.length; j++) {
-                            editor.putString("" + i + j, tabela[j]);
+                            editor.putString("" + count_players + j, tabela[j]);
                         }
 
                         editor.apply();
 
-                        if (i == 21) {
-                            i = 0;
+                        if (count_players == 21) {
+                            count_players = 0;
                         }
                         break;
                 }
@@ -147,31 +128,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    private void initButton() {
 
-    // função para testar a leaderboard
-    private void guardarInfo(){
-        SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        for(int i = 1; i< 21; i++){
-            String teste = i+";23/01/21;213;01:12;21;45842;diogo;EI";
-            String[] tabela = teste.split(";");
-            for (int j = 0; j < tabela.length; j++) {
-                editor.putString("" + i + j, tabela[j]);
-            }
-
-        }
-        editor.apply();
+        btnStart = findViewById(R.id.Btn_Start);
+        btnStart.setOnClickListener(this);
+        btnTabela = findViewById(R.id.Btn_table);
+        btnTabela.setOnClickListener(this);
+        btnStart.setEnabled(true);
+        btnLanguage = findViewById(R.id.Btn_Language);
+        btnLanguage.setOnClickListener(this);
     }
 
+    /**
+     * Função para colocar a ecrã completo, retirar o titulo da action bar e deixar o ecra ligado
+     */
+    private void viewSettings() {
+        // colocar fullscreen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // retirar o titulo da action bar
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        // Deixar o ecra ligado
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    /**
+     * Função para ir buscar a informação, das linguas e dispositivo guardada nas shared preferences
+     */
+    private void getInfo() {
+            SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
+            String lingua = prefs.getString("language", "pt");
+            setLanguage(this, lingua);
+            deviceName = prefs.getString("deviceName", "INSMAN");
+    }
+
+    /**
+     * OnCreate method - Função que é chamada quando a activity é criada
+     * É nela que se cria animação para activity do run, se verifica se o bluetooth é suportado
+     * E tenta ligar ao dispositivo bluetooth
+     * @param savedInstanceState - bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getInfo();
         setContentView(R.layout.activity_main);
         // iniciar o button
         initButton();
         btnStart.setEnabled(false);
         //guardarInfo();
         viewSettings();
+        // ir buscar a informação das shared preferences
+
         // animação do ciclista
         animation = new AlphaAnimation(1, 0); // Altera alpha de visível a invisível
         animation.setDuration(500); // duração - meio segundo
@@ -200,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Uteis.MSG_Log("Desconectado");
@@ -207,7 +215,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBluetoothManager.disconnect();
     }
 
-    // recebe o resultado da Activity iniciada
+    /**
+     * Função para receber o resultado do quiz e do keyboard, para depois enviar para o arduino
+     * @param requestCode - codigo do pedido de resultado
+     * @param resultCode - codigo do resultado, se foi bem sucedido ou não
+     * @param data - dados recebidos
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -237,6 +250,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * OnClick dos botões
+     * Se o botão start for clicado, envia um s para o arduino
+     * Se o botão tabela for clicado, vai para a tabela
+     * Se o botão definições for clicado, abre um popup com as definições
+     *  Sendo elas, a linguagem e o dispositivo bluetooth
+     * @param view - botão clicado
+     */
+
     @SuppressLint("NonConstantResourceId")
     public void onClick(@NonNull View view) {
         switch (view.getId()) {
@@ -250,30 +272,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.Btn_Language:
-                Uteis.MSG_Log("Botão linguagem ativado");
-                // pop up para escolher a linguagem
+                Uteis.MSG_Log("Botão Definições ativado");
+                // POPUP para as definições
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                String title = getResources().getString(R.string.Str_escolher);
-                title = Html.fromHtml("<font color='#000055'>"+title+"</font>",Html.FROM_HTML_MODE_LEGACY).toString();
+                String title = getResources().getString(R.string.Str_definicoes);
+                title = Html.fromHtml("<font color='#000055'>" + title + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
                 builder.setTitle(title);
-                String[] linguagens = getResources().getStringArray(R.array.linguagem);
-                builder.setItems(linguagens, new DialogInterface.OnClickListener() {
+                String[] opcoes = {"Mudar Linguagem", "Mudar Controlador Bluetooth"};
+                builder.setItems(opcoes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                            // mudar a linguagem para português
-                            Uteis.setLanguage(MainActivity.this,"pt");
-                            recreate();
-
-                        } else if (which == 1) {
-                            // mudar a linguagem para inglês
-                            Uteis.setLanguage(MainActivity.this,"es");
-                            recreate();
-
-                        } else if (which == 2) {
-                            // mudar a linguagem para espanhol
-                            Uteis.setLanguage(MainActivity.this,"en");
-                            recreate();
+                        if (which == 0) { // mudar linguagem
+                            getChangeLanguageDialog();
+                        } else if (which == 1) { // mudar controlador bluetooth
+                            getChangeBluetoothDialog();
                         }
                     }
                 });
@@ -286,7 +298,96 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Função para ir buscar o dialogo para mudar o controlador bluetooth
+     */
+    private void getChangeLanguageDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        String title = getResources().getString(R.string.Str_escolher);
+        title = Html.fromHtml("<font color='#000055'>" + title + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
+        builder.setTitle(title);
+        String[] linguagens = getResources().getStringArray(R.array.linguagem);
+        builder.setItems(linguagens, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    // mudar a linguagem para português
+                    setLanguage(MainActivity.this, "pt");
+                    recreate();
 
+                } else if (which == 1) {
+                    // mudar a linguagem para inglês
+                    setLanguage(MainActivity.this, "es");
+                    recreate();
+
+                } else if (which == 2) {
+                    // mudar a linguagem para espanhol
+                    setLanguage(MainActivity.this, "en");
+                    recreate();
+                }
+            }
+        });
+        // botao cancelar
+        builder.setNegativeButton(R.string.Str_cancelar, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+        builder.create().show();
+    }
+
+    /**
+     * Função para ir buscar o dialogo para mudar o controlador bluetooth
+     */
+    private void getChangeBluetoothDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        String title = getResources().getString(R.string.Str_controlador, deviceName);
+        title = Html.fromHtml("<font color='#000055'>" + title + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
+        builder.setTitle(title);
+        String[] pairedDevices = mBluetoothManager.getpairedDevices();
+        builder.setItems(pairedDevices, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mBluetoothManager.setDeviceName(pairedDevices[which]);
+                deviceName = pairedDevices[which];
+                SharedPreferences.Editor editor = getSharedPreferences(pref_name, MODE_PRIVATE).edit();
+                editor.putString("deviceName", deviceName);
+                editor.apply();
+                recreate();
+            }
+        });
+        // botao para fechar o popup
+        builder.setNegativeButton(R.string.Str_cancelar, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+
+    /**
+     * Função para mudar a linguagem da aplicação
+     * @param context o contexto onde a aplicação está a correr
+     * @param languageCode o código da linguagem para mudar
+     */
+    public static void setLanguage(Context context, String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+
+        Resources resources = context.getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+        // salvar a linguagem escolhida
+        SharedPreferences.Editor editor = context.getSharedPreferences(pref_name, MODE_PRIVATE).edit();
+        editor.putString("language", languageCode);
+        editor.apply();
+    }
 
 
 }

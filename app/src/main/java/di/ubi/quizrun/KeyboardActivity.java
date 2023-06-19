@@ -22,6 +22,9 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
 
     EditText edt_nome, edt_numero, edt_curso;
 
+    /**
+     * Função para colocar a ecrã completo, retirar o titulo da action bar e deixar o ecra ligado
+     */
     private void viewSettings() {
         // colocar fullscreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -34,6 +37,9 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);
+        String lingua = prefs.getString("language", "pt");
+        MainActivity.setLanguage(this, lingua);
         setContentView(R.layout.activity_keyboard);
         // iniciar o button
         Button btnStart = findViewById(R.id.Btn_submeter);
@@ -54,7 +60,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
         Uteis.MSG_Log("Texto recebido: " + tempo + " Pontos: " + ponto + " Distancia: " + distancia);
         String texto = getString(R.string.Str_Tempo, tempo, distancia, ponto);
         textView.setText(texto);
-        SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);
+        // ouvir as mudanças nas preferencias para fechar a activity
         prefs.registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
             if (sharedPreferences.getBoolean("fechar_keyboard", false)) {
                 finish();
@@ -62,6 +68,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
         });
 
     }
+
 
     @Override
     public void onClick(View view) {

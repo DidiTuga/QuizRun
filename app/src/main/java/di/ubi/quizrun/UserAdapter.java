@@ -8,16 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH>{
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH> {
 
-    private ArrayList<User> users;
-    private Context context;
+    private final ArrayList<User> users;
+    private final Context context;
 
     public UserAdapter(ArrayList<User> users, Context context) {
         this.users = users;
@@ -59,13 +58,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH>{
         String pontos = context.getString(R.string.str_pontos) + user.getPontos();
         holder.pontos.setText(pontos);
         //-- AGORA VAI ADICIONAR UMA STRING A DIZER O QUE É ANTES
-        String distancia = context.getString(R.string.Str_distancia)+" " + user.getDistancia() + "km";
+        String distancia = context.getString(R.string.Str_distancia) + " " + user.getDistancia() + "km";
         holder.distancia.setText(distancia);
-        String tempo = context.getString(R.string.str_tempoDemorado)+" "  + user.getTempo();
+        String tempo = context.getString(R.string.str_tempoDemorado) + " " + user.getTempo();
         holder.tempo.setText(tempo);
-        String num = context.getString(R.string.Str_Naluno)+ ": " + user.getNum();
+        String num = context.getString(R.string.Str_Naluno) + ": " + user.getNum();
         holder.num.setText(num);
-        String curso = context.getString(R.string.Str_curso)+": " + user.getCurso();
+        String curso = context.getString(R.string.Str_curso) + ": " + user.getCurso();
         holder.curso.setText(curso);
 
         boolean isExpanded = users.get(position).isExpanded();
@@ -78,7 +77,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH>{
         return users.size();
     }
 
-    class UserVH extends RecyclerView.ViewHolder{
+    class UserVH extends RecyclerView.ViewHolder {
         TextView pos, date, distancia, tempo, pontos, num, nome, curso;
         ConstraintLayout expandableLayout, notExpandableLayout, cardLayout;
         ImageView arrow, profile;
