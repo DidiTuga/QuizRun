@@ -36,3 +36,5 @@ As tecnologias usadas para o desenvolvimento deste projeto foram:
 ## Instalação 
 Para instalar o projeto, basta fazer o download do ficheiro .apk e instalar no seu smartphone.
 
+
+## Obrigado pela atenção!
