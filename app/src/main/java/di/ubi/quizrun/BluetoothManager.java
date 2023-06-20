@@ -98,7 +98,8 @@ public class BluetoothManager {
                     }
                 }
                 if (device_final == null) {
-                    Uteis.MSG(mContext, "Dispositivo não encontrado, conecte-se ao dispositivo");
+                    String msg = mContext.getString(R.string.Str_dispositivoNotFound);
+                    Uteis.MSG(mContext, msg);
                     sleep(1000);
                     Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
                     mContext.startActivity(intent);
@@ -118,7 +119,8 @@ public class BluetoothManager {
                     sendData(msg);
                 }
             } else {
-                Uteis.MSG(mContext, "Ative o bluetooth e faça a conexão ao dispositivo");
+                String msg = mContext.getString(R.string.Str_bluetoothDesativado);
+                Uteis.MSG(mContext, msg);
                 sleep(1000);
                 Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
                 mContext.startActivity(intent);

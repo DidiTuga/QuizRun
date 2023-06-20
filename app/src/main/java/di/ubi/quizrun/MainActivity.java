@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String title = getResources().getString(R.string.Str_definicoes);
                 title = Html.fromHtml("<font color='#000055'>" + title + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
                 builder.setTitle(title);
-                String[] opcoes = {"Mudar Linguagem", "Mudar Controlador Bluetooth"};
+                String[] opcoes = getResources().getStringArray(R.array.definicoes);
                 builder.setItems(opcoes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

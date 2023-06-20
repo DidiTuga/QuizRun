@@ -21,7 +21,13 @@
         <item>Espanhol</item>
         <item>Inglês</item>
     </string-array>
+    <string-array name="definicoes">
+        <item>Mudar Linguagem</item>
+        <item>Mudar Controlador Bluetooth</item>
+    </string-array>
     <string name="Str_definicoes">Definições</string>
     <string name="Str_controlador">Escolha um novo Controlador  - O atual é %s</string>
     <string name="Str_cancelar">Cancelar</string>
+    <string name="Str_dispositivoNotFound">Dispositivo não encontrado, conecte-se ao dispositivo</string>
+    <string name="Str_bluetoothDesativado">Ative o bluetooth e faça a conexão ao dispositivo</string>
 </resources>

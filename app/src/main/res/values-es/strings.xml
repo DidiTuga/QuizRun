@@ -15,10 +15,16 @@
         <item>Español</item>
         <item>Inglés</item>
     </string-array>
+    <string-array name="definicoes">
+        <item>Cambiar Idioma</item>
+        <item>Cambiar Controlador Bluetooth</item>
+    </string-array>
     <string name="Str_distancia">Distancia:</string>
     <string name="str_tempoDemorado">Tiempo:</string>
     <string name="str_pontos">"Puntuación: "</string>
     <string name="Str_definicoes">Ajustes</string>
     <string name="Str_controlador">Elija un nuevo controlador  - El actual es %s</string>
     <string name="Str_cancelar">Cancelar</string>
+    <string name="Str_dispositivoNotFound">Dispositivo no encontrado, conectarse al dispositivo</string>
+    <string name="Str_bluetoothDesativado">Bluetooth está desactivado, actívelo</string>
 </resources>
