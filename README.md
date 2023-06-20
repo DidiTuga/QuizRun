@@ -2,8 +2,9 @@
 Elaborado no âmbito da UC de projeto da UBI, sendo que foi nesta que o trabalho foi desenvolvido. (2022/2023)
 
 ## Team
-[![Diogo Santos](https://avatars.githubusercontent.com/u/96886187?s=100&v=4)](https://github.com/DidiTuga)|
-[Diogo Santos](https://github.com/DidiTuga)|  
+| [![Diogo Santos](https://avatars.githubusercontent.com/u/96886187?s=100&v=4)](https://github.com/DidiTuga) |
+|------------------------------------------------------------------------------------------------------------|
+| [Diogo Santos](https://github.com/DidiTuga)                                                                |  
 
 ## Descrição do Projeto
 
