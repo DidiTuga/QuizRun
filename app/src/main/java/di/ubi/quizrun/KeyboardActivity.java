@@ -1,3 +1,11 @@
+/**
+ * @file KeyboardActivity.java
+ * @brief Coloca um formulário para o utilizador preencher e envia os dados para o servidor, caso o user fique no top20
+ * @version 1.1
+ * @date 20-05-2023
+ * @autor Diogo Santos 45842
+ */
+
 package di.ubi.quizrun;
 
 import android.app.AlertDialog;
@@ -21,6 +29,8 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
 
 
     EditText edt_nome, edt_numero, edt_curso;
+    Button btnStart;
+    TextView textView;
 
     /**
      * Função para colocar a ecrã completo, retirar o titulo da action bar e deixar o ecra ligado
@@ -33,7 +43,22 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
         // Deixar o ecra ligado
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
-
+    /**
+     * Função para inicializar as variaveis da classe, como os edittext e textview e button.
+     * Colocar o listener no button
+     */
+    private void initVariables(){
+        textView = findViewById(R.id.Txt_texto);
+        btnStart = findViewById(R.id.Btn_submeter);
+        btnStart.setOnClickListener(this);
+        edt_nome = findViewById(R.id.Edt_Nome);
+        edt_numero = findViewById(R.id.Edt_Naluno);
+        edt_curso = findViewById(R.id.Edt_Curso);
+    }
+    /**
+     * Coloca a lingua escolhida pelo utilizador, caso não tenha escolhido nada, coloca a lingua por defeito
+     * E inicializa a activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,15 +66,6 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
         String lingua = prefs.getString("language", "pt");
         MainActivity.setLanguage(this, lingua);
         setContentView(R.layout.activity_keyboard);
-        // iniciar o button
-        Button btnStart = findViewById(R.id.Btn_submeter);
-        btnStart.setOnClickListener(this);
-        // inicar textview e edittext
-        TextView textView = findViewById(R.id.Txt_texto);
-        edt_nome = findViewById(R.id.Edt_Nome);
-        edt_numero = findViewById(R.id.Edt_Naluno);
-        edt_curso = findViewById(R.id.Edt_Curso);
-
         viewSettings();
         // receber o texto do intent
         Intent intent = getIntent();
@@ -69,7 +85,10 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-
+    /**
+     * Função para enviar os dados para o servidor, caso o utilizador clique no botão, e mostrar uma janela de dialogo para confirmar os dados
+     * @param view - View do botão clicado
+     */
     @Override
     public void onClick(View view) {
         Intent resultIntent = new Intent();
@@ -114,7 +133,9 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
         }
 
     }
-
+    /**
+     * Função para fechar a activity e dar um resultado para a activity anterior
+     */
     public void onStop() {
         super.onStop();
         SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);

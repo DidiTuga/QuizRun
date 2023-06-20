@@ -1,3 +1,11 @@
+/**
+ * @file Uteis.java
+ * @brief Classe para ter funções uteis, para cada projeto
+ * @date 10/03/2023
+ * @version 1.0
+ * @autor Diogo Santos nº45842
+ */
+
 package di.ubi.quizrun;
 
 import android.content.Context;
@@ -19,9 +27,4 @@ public class Uteis {
         //  Categoria -- Depois posso meteter Passo 3 ect
     }
 
-
 }
-        /* Colocar a aplicacao em fullscreen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // Tirar o título da action bar
-        Objects.requireNonNull(getSupportActionBar()).hide();*/

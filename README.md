@@ -11,3 +11,28 @@ O projeto tem como título Controlador para Exergame e consiste na criação de 
 
 # Orientação
 ## [Pedro Araújo](https://www.ubi.pt/Pessoa/paraujo)
+
+## Funcionalidades
+    \item Controlador Bluetooth
+    \item Mudança de Janelas
+    \item Alterar Linguagem
+    \item Guardar e visualizar Tabela de Classificação
+
+- [x] Controlador Bluetooth
+- [x] Mudança de Janelas
+- [x] Alterar Linguagem
+- [x] Guardar e visualizar Tabela de Classificação
+
+## Tecnologias
+As tecnologias usadas para o desenvolvimento deste projeto foram:
+- [x] Figma
+- [x] Android Studio
+- [x] Java
+- [x] GitHub
+- [x] Visual Studio
+- [x] Draft.io
+- [x] Bluetooth
+
+## Instalação 
+Para instalar o projeto, basta fazer o download do ficheiro .apk e instalar no seu smartphone.
+

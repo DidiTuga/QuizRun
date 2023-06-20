@@ -1,3 +1,11 @@
+/**
+ * @file BluetoothManager.java
+ * @brief Classe para gerir a conexão Bluetooth
+ * @date 15/06/2023
+ * @version 1.1
+ * @autor Diogo Santos nº45842
+ */
+
 package di.ubi.quizrun;
 
 import static java.lang.Thread.sleep;
@@ -22,11 +30,12 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
-// function to connect to the bluetooth device
-// and send and receive data
+/**
+ * Classe para conectar ao dispositivo Bluetooth
+ * Nessa conexão é possível enviar e receber dados
+ */
 public class BluetoothManager {
     private static final int MY_PERMISSIONS_REQUEST_BLUETOOTH = 1;
-    private static final int REQUEST_ENABLE_BT = 2;
     private final BluetoothAdapter mAdapter;
     private final Context mContext;
     private final UUID mUUID;
@@ -38,6 +47,12 @@ public class BluetoothManager {
     private boolean mIsConnected;
     private String mDeviceName;
 
+    /**
+     * Construtor
+     * @param context - Contexto da aplicação
+     * @param handler - Handler para enviar as mensagens para a UI
+     * @param mActivity - Activity onde está a ser usado
+     */
     public BluetoothManager(Context context, Handler handler, Activity mActivity) {
         mContext = context;
         mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -50,8 +65,9 @@ public class BluetoothManager {
 
     /**
      * Procurar por dispositivos Bluetooth pareados
-     *
-     * @param DeviceName
+     * E conectar ao dispositivo com o nome passado como parâmetro
+     * Se não encontrar nenhum dispositivo com esse nome, envia uma mensagem para a UI, a dizer que não encontrou e coloca a janela de definições do Bluetooth
+     * @param DeviceName - Nome do dispositivo a procurar
      */
     public void connectToDevice(String DeviceName) {
         mDeviceName = DeviceName;
@@ -116,7 +132,10 @@ public class BluetoothManager {
     }
 
 
-    // Envia dados para o dispositivo Bluetooth
+    /**
+     * Enviar dados para o dispositivo Bluetooth
+     * @param data - dados a serem enviados
+     */
     public synchronized void sendData(String data) {
         Uteis.MSG_Log("Tentar enviar data: " + data);
         while (!mIsConnected) {
@@ -133,8 +152,10 @@ public class BluetoothManager {
 
     }
 
-    // Escuta os dados recebidos do dispositivo Bluetooth
-    // os dados são enviados para a MainActivity atraves do Handler
+    /**
+     * Escuta os dados recebidos do dispositivo Bluetooth
+     * os dados são enviados para a MainActivity atraves do Handler
+     */
     public void startListening() {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -163,11 +184,16 @@ public class BluetoothManager {
         thread.start();
     }
 
+    /**
+     * Parar de escutar os dados recebidos do dispositivo Bluetooth
+     */
     public void stopListening() {
         mIsConnected = false;
     }
 
-    // Desconecta do dispositivo Bluetooth
+    /**
+     * Desconectar do dispositivo Bluetooth
+     */
     public void disconnect() {
         if (mIsConnected) {
             try {
@@ -180,11 +206,17 @@ public class BluetoothManager {
         }
     }
 
-
+    /**
+     * @return - retorna o nome do dispositivo Bluetooth
+     */
     public String getDeviceName() {
         return mDeviceName;
     }
 
+    /**
+     * Coloca um novo dispositivo Bluetooth para ser conectado
+     * @param deviceName - nome do dispositivo Bluetooth
+     */
     public void setDeviceName(String deviceName) {
         mDeviceName = deviceName;
     }
@@ -221,7 +253,9 @@ public class BluetoothManager {
         return pairedD;
     }
 
-    // Verifica se o dispositivo está conectado
+    /**
+     * @return - retorna o estado da conexão
+     */
     public boolean isConnected() {
         return mIsConnected;
     }

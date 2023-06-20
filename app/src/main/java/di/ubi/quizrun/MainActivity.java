@@ -1,3 +1,11 @@
+/**
+ * @file MainActivity.java
+ * @brief Classe que representa a MainActivity, tendo como função principal a ligação ao bluetooth e a criação de um handler para receber os dados do arduino para alterar as janelas
+ * @date 2023/05/30
+ * @version 1.2
+ * @autor Diogo Santos nº 45842
+ */
+
 package di.ubi.quizrun;
 
 import android.annotation.SuppressLint;
@@ -31,7 +39,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Locale;
 import java.util.Objects;
 
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int MESSAGE_READ = 23;
     public static final String pref_name = "dataBase";
@@ -45,7 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int flag_quiz = 0;
     private int flag_keyboard = 0;
 
-    // iniciar o handler
+    /**
+     * Handler para receber os dados do arduino e alterar as janelas
+     * @see BluetoothManager
+     */
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler(Looper.myLooper()) {
         // variavel para contar o numero de jogadores so para ler os top 20
@@ -69,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             prefs.edit().putBoolean("fechar_keyboard", true).apply();
                         }
 
-                        initButton();
+                        initVariables();
 
                         break;
                     case "R":
@@ -128,7 +138,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
-    private void initButton() {
+    /**
+     * Função para iniciar todos os botões e variaveis, colocando os listeners nos botões
+     * E iniciar a animação do ciclista
+     */
+    private void initVariables() {
 
         btnStart = findViewById(R.id.Btn_Start);
         btnStart.setOnClickListener(this);
@@ -137,6 +151,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnStart.setEnabled(true);
         btnLanguage = findViewById(R.id.Btn_Language);
         btnLanguage.setOnClickListener(this);
+        // animação do ciclista
+        animation = new AlphaAnimation(1, 0); // Altera alpha de visível a invisível
+        animation.setDuration(500); // duração - meio segundo
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE); // Repetir infinitamente
+        animation.setRepeatMode(Animation.REVERSE); //Inverte a animação no final para que o botão vá desaparecendo
     }
 
     /**
@@ -165,7 +185,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * OnCreate method - Função que é chamada quando a activity é criada
      * É nela que se cria animação para activity do run, se verifica se o bluetooth é suportado
      * E tenta ligar ao dispositivo bluetooth
-     * @param savedInstanceState - bundle
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,18 +192,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getInfo();
         setContentView(R.layout.activity_main);
         // iniciar o button
-        initButton();
+        initVariables();
         btnStart.setEnabled(false);
         //guardarInfo();
         viewSettings();
-        // ir buscar a informação das shared preferences
-
-        // animação do ciclista
-        animation = new AlphaAnimation(1, 0); // Altera alpha de visível a invisível
-        animation.setDuration(500); // duração - meio segundo
-        animation.setInterpolator(new LinearInterpolator());
-        animation.setRepeatCount(Animation.INFINITE); // Repetir infinitamente
-        animation.setRepeatMode(Animation.REVERSE); //Inverte a animação no final para que o botão vá desaparecendo
         // Ver se o bluetooth é suportado
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH)) {
             Toast.makeText(this, "NÃO È SUPORTADO", Toast.LENGTH_SHORT).show();
@@ -207,6 +218,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /**
+     * Função para desligar o bluetooth quando a activity é destruida
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -258,7 +272,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *  Sendo elas, a linguagem e o dispositivo bluetooth
      * @param view - botão clicado
      */
-
     @SuppressLint("NonConstantResourceId")
     public void onClick(@NonNull View view) {
         switch (view.getId()) {

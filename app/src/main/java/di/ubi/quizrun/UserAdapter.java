@@ -1,3 +1,10 @@
+/**
+ * @file UserAdapter.java
+ * @brief Classe para criar o adapter para a leaderboard
+ * @date 15/06/2023
+ * @version 1.0
+ * @autor Diogo Santos nº45842
+ */
 package di.ubi.quizrun;
 
 import android.content.Context;
@@ -18,11 +25,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH> {
     private final ArrayList<User> users;
     private final Context context;
 
+    /**
+     * Construtor da classe
+     * @param users - ArrayList com os utilizadores
+     * @param context - Contexto da aplicação
+     */
     public UserAdapter(ArrayList<User> users, Context context) {
         this.users = users;
         this.context = context;
     }
 
+    /**
+     * Criar a classe UserVH que extende de RecyclerView.ViewHolder
+     * @param parent - os elementos da leaderboard
+     * @param viewType - tipo de view
+     * @return - todos os elementos da leaderboard
+     */
     @NonNull
     @Override
     public UserVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -30,10 +48,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH> {
         return new UserVH((ViewGroup) view);
     }
 
+    /**
+     * Classe que inializa os elementos da leaderboard
+     * @param holder - um cartao da leaderboard
+     * @param position - a posicao do cartao
+     */
     @Override
     public void onBindViewHolder(@NonNull UserVH holder, int position) {
         User user = users.get(position);
-        if (position < 3) {
+        if (position < 3) { // se for um dos 3 primeiros
             if (position == 0) {
                 holder.pos.setText("");
                 holder.pos.setBackgroundResource(R.drawable.priplace);
@@ -72,11 +95,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH> {
 
     }
 
+    /**
+     * @return Devolve o numero de utilizadores
+     */
     @Override
     public int getItemCount() {
         return users.size();
     }
 
+    /**
+     * Classe UserVH que extende de RecyclerView.ViewHolder
+     * É esta classe que vai ser o cartão que vai aparecer na leaderboard.
+     */
     class UserVH extends RecyclerView.ViewHolder {
         TextView pos, date, distancia, tempo, pontos, num, nome, curso;
         ConstraintLayout expandableLayout, notExpandableLayout, cardLayout;

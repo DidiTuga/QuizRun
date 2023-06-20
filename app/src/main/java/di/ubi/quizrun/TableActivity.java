@@ -1,3 +1,11 @@
+/**
+ * @file TableActivity.java
+ * @brief Classe para mostrar a tabela de classificação
+ * @version 1.1
+ * @date 10/06/2023
+ * @autor Diogo Santos nº 45842
+ */
+
 package di.ubi.quizrun;
 
 import android.content.SharedPreferences;
@@ -11,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
 
 public class TableActivity extends AppCompatActivity {
     ArrayList<User> users;
@@ -28,6 +37,10 @@ public class TableActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
+    /**
+     * Função para inicializar a activity, com a lingua guardada nas shared preferences, inicializar os dados e o recycler view
+     * E inicializar o botão de voltar
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);
@@ -52,11 +65,18 @@ public class TableActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Função para quando o botão de voltar é pressionado, fechar a activity
+     */
     public void onBackPressed() {
         finish();
     }
 
-
+    /**
+     * Função para inicializar os dados da tabela, com os dados guardados nas shared preferences, e colocar na lista
+     * Se não houver dados, coloca dados default, a dizer que precisa de se conectar por bluetooth
+     * @see User
+     */
     private void initData() {
         SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);
         users = new ArrayList<>();
@@ -75,6 +95,11 @@ public class TableActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Função para inicializar o recycler view, com os dados da lista
+     * @see UserAdapter
+     * @see User
+     */
     private void initRecyclerView() {
         UserAdapter adapter = new UserAdapter(users, this);
         recyclerView.setAdapter(adapter);

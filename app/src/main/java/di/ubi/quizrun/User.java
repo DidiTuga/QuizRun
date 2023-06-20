@@ -1,7 +1,15 @@
+/**
+ * @file User.java
+ * @brief Classe para guardar os dados de um utilizador que participou no quiz e esteja na leaderboard
+ * @date 15/06/2023
+ * @version 1.0
+ * @autor Diogo Santos nº45842
+ */
 package di.ubi.quizrun;
 
+import androidx.annotation.NonNull;
+
 public class User {
-    // "Pos", "Date", "Distancia", "Tempo, "Pontos", "Nº", "Nome", "Curso"
     private String pos;
     private String date;
     private String distancia;
@@ -48,6 +56,7 @@ public class User {
         this.date = date;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +
