@@ -8,6 +8,8 @@
 
 package di.ubi.quizrun;
 
+import static java.lang.Thread.sleep;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -42,8 +44,6 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int MESSAGE_READ = 23;
     public static final String pref_name = "dataBase";
-    //public static String deviceName = "BTBEE PRO";
-    @SuppressLint("StaticFieldLeak")
     public static BluetoothManager mBluetoothManager;
     public String deviceName;
     Button btnStart, btnTabela;
@@ -78,9 +78,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
                             prefs.edit().putBoolean("fechar_keyboard", true).apply();
                         }
-
                         initVariables();
-
+                        // ativar o botao de start
                         break;
                     case "R":
                         Uteis.MSG_Log("RUN");
@@ -107,9 +106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Uteis.MSG_Log("KEYBOARD");
                         flag_keyboard = 1;
                         Intent keyboard = new Intent(MainActivity.this, KeyboardActivity.class);
-                        keyboard.putExtra("Tempo", "6H");
-                        keyboard.putExtra("Distancia", "10km");
-                        keyboard.putExtra("Pontos", "50");
                         startActivityForResult(keyboard, 2);
                         // mandar informação  para a activity do keyboard
 
@@ -119,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     default:
                         count_players++;
                         // vai receber a tabela de tempos
-
                         String[] tabela = readMessage.split(";");
                         SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
@@ -143,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * E iniciar a animação do ciclista
      */
     private void initVariables() {
-
         btnStart = findViewById(R.id.Btn_Start);
         btnStart.setOnClickListener(this);
         btnTabela = findViewById(R.id.Btn_table);
@@ -193,8 +187,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         // iniciar o button
         initVariables();
-        btnStart.setEnabled(false);
-        //guardarInfo();
+        this.btnStart.setEnabled(false);
+
         viewSettings();
         // Ver se o bluetooth é suportado
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH)) {
@@ -210,23 +204,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void run() {
                     mBluetoothManager.sendData("t");
+                    Uteis.MSG_Log("T enviado");
                 }
             }, 1500);
 
 
         }
 
-    }
-
-    /**
-     * Função para desligar o bluetooth quando a activity é destruida
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Uteis.MSG_Log("Desconectado");
-
-        mBluetoothManager.disconnect();
     }
 
     /**
@@ -257,10 +241,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }, 1500);
         } else if (requestCode == 2 && resultCode == RESULT_CANCELED) {
             Uteis.MSG_Log("Resultado_Keyboard: Cancelado");
-            setContentView(R.layout.activity_main);
+
         } else if (requestCode == 1 && resultCode == RESULT_CANCELED) {
             Uteis.MSG_Log("Resultado_Quiz: Cancelado");
-            setContentView(R.layout.activity_run);
         }
     }
 
@@ -326,17 +309,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (which == 0) {
                     // mudar a linguagem para português
                     setLanguage(MainActivity.this, "pt");
-                    recreate();
+                    finish();
+                    startActivity(getIntent());
 
                 } else if (which == 1) {
                     // mudar a linguagem para inglês
                     setLanguage(MainActivity.this, "es");
-                    recreate();
+                    finish();
+                    startActivity(getIntent());
 
                 } else if (which == 2) {
                     // mudar a linguagem para espanhol
                     setLanguage(MainActivity.this, "en");
-                    recreate();
+                    finish();
+                    startActivity(getIntent());
                 }
             }
         });
@@ -364,12 +350,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setItems(pairedDevices, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mBluetoothManager.setDeviceName(pairedDevices[which]);
-                deviceName = pairedDevices[which];
-                SharedPreferences.Editor editor = getSharedPreferences(pref_name, MODE_PRIVATE).edit();
-                editor.putString("deviceName", deviceName);
-                editor.apply();
-                recreate();
+                if(which == 0 && pairedDevices[0].equals(getResources().getString(R.string.Str_pareado))){
+                    dialog.dismiss();
+                }else{
+                    mBluetoothManager.setDeviceName(pairedDevices[which]);
+                    deviceName = pairedDevices[which];
+                    SharedPreferences.Editor editor = getSharedPreferences(pref_name, MODE_PRIVATE).edit();
+                    editor.putString("deviceName", deviceName);
+                    editor.apply();
+                    finish();
+                    startActivity(getIntent());
+                }
+
             }
         });
         // botao para fechar o popup

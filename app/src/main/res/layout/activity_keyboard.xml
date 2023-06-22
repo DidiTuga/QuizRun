@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:autoSizeTextType="uniform"
-            android:text="TextView"
+            android:text=""
             android:layout_marginTop="15dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
@@ -43,7 +43,8 @@
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
             android:inputType="textPersonName"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/Edt_Curso"
@@ -57,7 +58,8 @@
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
             android:inputType="textPersonName"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/Edt_Naluno"
@@ -71,7 +73,8 @@
             android:inputType="phone"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:autofillHints="" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/Btn_submeter"

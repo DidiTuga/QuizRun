@@ -244,13 +244,19 @@ public class BluetoothManager {
         Set<BluetoothDevice> pairedDevices = mAdapter.getBondedDevices();
 
         String[] pairedD = new String[pairedDevices.size()];
+        int i = 0;
         if (pairedDevices.size() > 0) {
             Uteis.MSG_Log("Dispositivos pareados: " + pairedDevices.size());
-            for (int i = 0; i < pairedDevices.size(); i++) {
-                if (!pairedDevices.toArray()[i].equals(mDeviceName)) {
-                    pairedD[i] = pairedDevices.toArray()[i].toString();
+            for (BluetoothDevice device : pairedDevices) {
+                Uteis.MSG_Log("Device: " + device.getName() + ", " + device);
+                if (!device.getName().contains(mDeviceName)) {
+                    pairedD[0] = device.getName();
+                    i++;
                 }
             }
+        }
+        if (i == 0) {
+            pairedD[0] = mContext.getString(R.string.Str_pareado);
         }
         return pairedD;
     }

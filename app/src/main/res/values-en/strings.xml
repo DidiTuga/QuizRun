@@ -8,7 +8,7 @@
     <string name="Str_nome">Name</string>
     <string name="Str_submeter">Submit</string>
     <string name="tabela">LeaderBoard</string>
-    <string name="Str_Tempo">Time: %s Distance: %s Points: %s</string>
+    <string name="Str_Tempo">Congratulations, you got Top20, fill in the form to appear in the table</string>
     <string name="Str_escolher">Choose a Language</string>
     <string-array name="linguagem">
         <item>Portuguese</item>
@@ -27,4 +27,5 @@
     <string name="Str_cancelar">Cancel</string>
     <string name="Str_dispositivoNotFound">Device not found, connect to device</string>
     <string name="Str_bluetoothDesativado">Bluetooth is disabled, please enable it</string>
+    <string name="Str_pareado">No new devices paired</string>
 </resources>

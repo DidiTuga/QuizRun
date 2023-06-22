@@ -8,7 +8,7 @@
     <string name="Str_nome">Nombre</string>
     <string name="Str_submeter">Entregar</string>
     <string name="tabela">Calificaciones</string>
-    <string name="Str_Tempo">Tiempo: %s Distancia: %s Puntos: %s</string>
+    <string name="Str_Tempo">Enhorabuena, has llegado al Top20, rellena el formulario para aparecer en la tabla</string>
     <string name="Str_escolher">Elija un idioma</string>
     <string-array name="linguagem">
         <item>Portugués</item>
@@ -27,4 +27,5 @@
     <string name="Str_cancelar">Cancelar</string>
     <string name="Str_dispositivoNotFound">Dispositivo no encontrado, conectarse al dispositivo</string>
     <string name="Str_bluetoothDesativado">Bluetooth está desactivado, actívelo</string>
+    <string name="Str_pareado">No hay nuevos dispositivos emparejados</string>
 </resources>

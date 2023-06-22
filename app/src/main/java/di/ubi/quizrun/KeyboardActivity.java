@@ -26,8 +26,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Objects;
 
 public class KeyboardActivity extends AppCompatActivity implements View.OnClickListener {
-
-
     EditText edt_nome, edt_numero, edt_curso;
     Button btnStart;
     TextView textView;
@@ -62,19 +60,15 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);
         String lingua = prefs.getString("language", "pt");
         MainActivity.setLanguage(this, lingua);
         setContentView(R.layout.activity_keyboard);
+        initVariables();
         viewSettings();
         // receber o texto do intent
-        Intent intent = getIntent();
-        String tempo = intent.getStringExtra("Tempo");
-        String ponto = intent.getStringExtra("Pontos");
-        String distancia = intent.getStringExtra("Distancia");
-        // log para ver se o texto foi recebido
-        Uteis.MSG_Log("Texto recebido: " + tempo + " Pontos: " + ponto + " Distancia: " + distancia);
-        String texto = getString(R.string.Str_Tempo, tempo, distancia, ponto);
+        String texto = getString(R.string.Str_Tempo);
         textView.setText(texto);
         // ouvir as mudanças nas preferencias para fechar a activity
         prefs.registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {

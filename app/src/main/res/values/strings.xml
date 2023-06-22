@@ -10,7 +10,7 @@
     <string name="Str_nome">Nome</string>
     <string name="Str_submeter">Submeter</string>
     <string name="tabela">Classificações</string>
-    <string name="Str_Tempo">Tempo: %s Distância: %s Pontos: %s</string>
+    <string name="Str_Tempo">Parabéns, conseguiu Top20, preencha o formulário para aparecer na tabela</string>
     <string name="Str_escolher">Escolha uma Linguagem</string>
     <string name="todo" translatable="false">Mudar de Linguagem</string>
     <string name="Str_distancia">Distância:</string>
@@ -30,4 +30,5 @@
     <string name="Str_cancelar">Cancelar</string>
     <string name="Str_dispositivoNotFound">Dispositivo não encontrado, conecte-se ao dispositivo</string>
     <string name="Str_bluetoothDesativado">Ative o bluetooth e faça a conexão ao dispositivo</string>
+    <string name="Str_pareado">Nenhum dispositivo novo emparelhado</string>
 </resources>
