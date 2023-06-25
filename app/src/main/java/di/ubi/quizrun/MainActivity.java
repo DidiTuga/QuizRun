@@ -107,8 +107,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         flag_keyboard = 1;
                         Intent keyboard = new Intent(MainActivity.this, KeyboardActivity.class);
                         startActivityForResult(keyboard, 2);
-                        // mandar informação  para a activity do keyboard
-
                         // voltar para o content view do main
                         setContentView(R.layout.activity_main);
                         break;
@@ -142,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnStart.setOnClickListener(this);
         btnTabela = findViewById(R.id.Btn_table);
         btnTabela.setOnClickListener(this);
-        btnStart.setEnabled(true);
         btnLanguage = findViewById(R.id.Btn_Language);
         btnLanguage.setOnClickListener(this);
         // animação do ciclista
@@ -187,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         // iniciar o button
         initVariables();
-        this.btnStart.setEnabled(false);
 
         viewSettings();
         // Ver se o bluetooth é suportado
@@ -198,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // iniciar o bluetooth
         mBluetoothManager = new BluetoothManager(this, mHandler, this);
         mBluetoothManager.connectToDevice(deviceName);
+        
         if (mBluetoothManager.isConnected()) {
             // handler de 1,5 segundos para mandar o t
             new Handler().postDelayed(new Runnable() {
