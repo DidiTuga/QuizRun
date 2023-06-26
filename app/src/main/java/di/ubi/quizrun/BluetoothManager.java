@@ -49,8 +49,9 @@ public class BluetoothManager {
 
     /**
      * Construtor
-     * @param context - Contexto da aplicação
-     * @param handler - Handler para enviar as mensagens para a UI
+     *
+     * @param context   - Contexto da aplicação
+     * @param handler   - Handler para enviar as mensagens para a UI
      * @param mActivity - Activity onde está a ser usado
      */
     public BluetoothManager(Context context, Handler handler, Activity mActivity) {
@@ -67,6 +68,7 @@ public class BluetoothManager {
      * Procurar por dispositivos Bluetooth pareados
      * E conectar ao dispositivo com o nome passado como parâmetro
      * Se não encontrar nenhum dispositivo com esse nome, envia uma mensagem para a UI, a dizer que não encontrou e coloca a janela de definições do Bluetooth
+     *
      * @param DeviceName - Nome do dispositivo a procurar
      */
     public void connectToDevice(String DeviceName) {
@@ -136,9 +138,11 @@ public class BluetoothManager {
 
     /**
      * Enviar dados para o dispositivo Bluetooth
+     *
      * @param data - dados a serem enviados
      */
     public synchronized void sendData(String data) {
+        data += "\n";
         Uteis.MSG_Log("Tentar enviar data: " + data);
         while (!mIsConnected) {
             connectToDevice(mDeviceName);
@@ -217,6 +221,7 @@ public class BluetoothManager {
 
     /**
      * Coloca um novo dispositivo Bluetooth para ser conectado
+     *
      * @param deviceName - nome do dispositivo Bluetooth
      */
     public void setDeviceName(String deviceName) {

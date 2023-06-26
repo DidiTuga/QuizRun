@@ -11,6 +11,7 @@ package di.ubi.quizrun;
 import static java.lang.Thread.sleep;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,6 +41,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int MESSAGE_READ = 23;
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int flag_quiz = 0;
     private int flag_keyboard = 0;
 
+    private String tabela = "";
+
     /**
      * Handler para receber os dados do arduino e alterar as janelas
      * @see BluetoothManager
@@ -59,73 +63,83 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler(Looper.myLooper()) {
         // variavel para contar o numero de jogadores so para ler os top 20
-        private int count_players = 0;
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MESSAGE_READ) {
                 String readMessage = (String) msg.obj;
 
                 readMessage = readMessage.trim();
-                switch (readMessage) {
-                    case "S":
-                        Uteis.MSG_Log("START");
-                        // se a question ou o keyboard estiverem abertos, fechar  e voltar para o main
-                        setContentView(R.layout.activity_main);
-                        // quando receber o S meter o botao disable
+                if(readMessage.equals("S")){
+                    Uteis.MSG_Log("START");
+                    // se a question ou o keyboard estiverem abertos, fechar  e voltar para o main
+                    setContentView(R.layout.activity_main);
+                    // quando receber o S meter o botao disable
 
-                        if (flag_keyboard == 1) {
-                            flag_keyboard = 0;
-                            SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
-                            prefs.edit().putBoolean("fechar_keyboard", true).apply();
-                        }
-                        initVariables();
-                        // ativar o botao de start
-                        break;
-                    case "R":
-                        Uteis.MSG_Log("RUN");
+                    if (flag_keyboard == 1) {
+                        flag_keyboard = 0;
+                        SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
+                        prefs.edit().putBoolean("fechar_keyboard", true).apply();
+                    }
+                    initVariables();
+                    // ativar o botao de start
+                } else if (readMessage.equals("R")) {
+                    Uteis.MSG_Log("RUN");
 
-                        // mudar content view para a activity do run
-                        setContentView(R.layout.activity_run);
-                        ImageView imageView = findViewById(R.id.run_gif);
-                        imageView.startAnimation(animation);
-                        if (flag_quiz == 1) {
-                            flag_quiz = 0;
-                            Uteis.MSG_Log("FLAG QUIZ");
-                            SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
-                            prefs.edit().putBoolean("fechar_quiz", true).apply();
+                    // mudar content view para a activity do run
+                    setContentView(R.layout.activity_run);
+                    ImageView imageView = findViewById(R.id.run_gif);
+                    imageView.startAnimation(animation);
+                    if (flag_quiz == 1) {
+                        flag_quiz = 0;
+                        Uteis.MSG_Log("FLAG QUIZ");
+                        SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
+                        prefs.edit().putBoolean("fechar_quiz", true).apply();
+                    }
+                } else if(readMessage.equals("Q")){
+                    Uteis.MSG_Log("QUIZ");
+                    flag_quiz = 1;
+                    // mudar content view para a activity do quiz
+                    Intent intent = new Intent(MainActivity.this, QuizActivity.class);
+                    startActivityForResult(intent, 1);
+
+                } else if (readMessage.equals("K")){
+                    Uteis.MSG_Log("KEYBOARD");
+                    flag_keyboard = 1;
+                    Intent keyboard = new Intent(MainActivity.this, KeyboardActivity.class);
+                    startActivityForResult(keyboard, 2);
+                    // voltar para o content view do main
+                    setContentView(R.layout.activity_main);
+                }
+                else
+                {
+                    tabela += readMessage;
+
+
+                    // quando tabela contiver 8 | quer dizer que está pronta para ser lida
+                    int count = 0;
+                    for (int i = 0; i < tabela.length(); i++) {
+                        if (tabela.charAt(i) == '|') {
+                            count++;
                         }
-                        break;
-                    case "Q":
-                        Uteis.MSG_Log("QUIZ");
-                        flag_quiz = 1;
-                        // mudar content view para a activity do quiz
-                        Intent intent = new Intent(MainActivity.this, QuizActivity.class);
-                        startActivityForResult(intent, 1);
-                        break;
-                    case "K":
-                        Uteis.MSG_Log("KEYBOARD");
-                        flag_keyboard = 1;
-                        Intent keyboard = new Intent(MainActivity.this, KeyboardActivity.class);
-                        startActivityForResult(keyboard, 2);
-                        // voltar para o content view do main
-                        setContentView(R.layout.activity_main);
-                        break;
-                    default:
-                        count_players++;
-                        // vai receber a tabela de tempos
-                        String[] tabela = readMessage.split(";");
+                    }
+                    if (count==20){
                         SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
-                        for (int j = 0; j < tabela.length; j++) {
-                            editor.putString("" + count_players + j, tabela[j]);
-                        }
+                        Uteis.MSG_Log("Tabela de tempos");
+                        // se for um T, quer dizer que é a tabela de tempos
+                        // vai receber a tabela de tempos
+                        String[] antesTabela = tabela.split("\\|");
+                        for (int i = 0; i < antesTabela.length; i++) {
+                            Uteis.MSG_Log(antesTabela[i]);
+                            String[] depoisTabela = antesTabela[i].split(";");
+                            for (int j = 0; j < depoisTabela.length; j++) {
+                                editor.putString("" + i + j, depoisTabela[j]);
+                            }
 
+                        }
                         editor.apply();
 
-                        if (count_players == 21) {
-                            count_players = 0;
-                        }
-                        break;
+                    }
                 }
             }
         }
@@ -169,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             SharedPreferences prefs = getSharedPreferences(pref_name, MODE_PRIVATE);
             String lingua = prefs.getString("language", "pt");
             setLanguage(this, lingua);
-            deviceName = prefs.getString("deviceName", "INSMAN");
+            deviceName = prefs.getString("deviceName", "BTBee Pro");
     }
 
     /**
@@ -194,18 +208,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // iniciar o bluetooth
         mBluetoothManager = new BluetoothManager(this, mHandler, this);
         mBluetoothManager.connectToDevice(deviceName);
-        
+
         if (mBluetoothManager.isConnected()) {
             // handler de 1,5 segundos para mandar o t
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     mBluetoothManager.sendData("t");
-                    Uteis.MSG_Log("T enviado");
                 }
             }, 1500);
-
-
         }
 
     }
@@ -242,6 +253,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (requestCode == 1 && resultCode == RESULT_CANCELED) {
             Uteis.MSG_Log("Resultado_Quiz: Cancelado");
         }
+    }
+
+    // super destruir a activity
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mBluetoothManager.disconnect();
     }
 
     /**
@@ -344,12 +362,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         title = Html.fromHtml("<font color='#000055'>" + title + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
         builder.setTitle(title);
         String[] pairedDevices = mBluetoothManager.getpairedDevices();
+
         builder.setItems(pairedDevices, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(which == 0 && pairedDevices[0].equals(getResources().getString(R.string.Str_pareado))){
-                    dialog.dismiss();
-                }else{
+
                     mBluetoothManager.setDeviceName(pairedDevices[which]);
                     deviceName = pairedDevices[which];
                     SharedPreferences.Editor editor = getSharedPreferences(pref_name, MODE_PRIVATE).edit();
@@ -357,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     editor.apply();
                     finish();
                     startActivity(getIntent());
-                }
+
 
             }
         });

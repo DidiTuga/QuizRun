@@ -80,7 +80,7 @@ public class TableActivity extends AppCompatActivity {
     private void initData() {
         SharedPreferences prefs = getSharedPreferences(MainActivity.pref_name, MODE_PRIVATE);
         users = new ArrayList<>();
-        for (int i = 1; i < 21; i++) {
+        for (int i = 0; i < 20; i++) {
             String pos = prefs.getString("" + i + 0, "null");
             String date = prefs.getString("" + i + 1, "null");
             String distancia = prefs.getString("" + i + 2, "null");
