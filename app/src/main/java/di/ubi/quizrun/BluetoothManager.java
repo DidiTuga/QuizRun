@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
@@ -102,14 +103,10 @@ public class BluetoothManager {
                 if (device_final == null) {
                     String msg = mContext.getString(R.string.Str_dispositivoNotFound);
                     Uteis.MSG(mContext, msg);
-                    sleep(1000);
-                    Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
-                    mContext.startActivity(intent);
                 } else {
                     mSocket = device_final.createRfcommSocketToServiceRecord(mUUID);
                     mSocket.connect();
                     // quando o socket já estiver ocupado por outra conexão
-
                     mInputStream = mSocket.getInputStream();
                     mOutputStream = mSocket.getOutputStream();
                     Uteis.MSG_Log("Conectado com o dispositivo: " + device_final.getName());
@@ -251,18 +248,22 @@ public class BluetoothManager {
         String[] pairedD = new String[pairedDevices.size()];
         int i = 0;
         if (pairedDevices.size() > 0) {
-            Uteis.MSG_Log("Dispositivos pareados: " + pairedDevices.size());
             for (BluetoothDevice device : pairedDevices) {
-                Uteis.MSG_Log("Device: " + device.getName() + ", " + device);
                 if (!device.getName().contains(mDeviceName)) {
-                    pairedD[0] = device.getName();
+                    pairedD[i] = device.getName();
                     i++;
                 }
             }
         }
         if (i == 0) {
             pairedD[0] = mContext.getString(R.string.Str_pareado);
+        }else {
+            // remover os nulls
+            pairedD = Arrays.stream(pairedD)
+                    .filter(s -> (s != null && s.length() > 0))
+                    .toArray(String[]::new);
         }
+        Uteis.MSG_Log("DISPOSTIVOS"+ Arrays.toString(pairedD));
         return pairedD;
     }
 

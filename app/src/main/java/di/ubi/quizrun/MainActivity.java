@@ -348,10 +348,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.dismiss();
             }
         });
-
-
         builder.create().show();
     }
+
 
     /**
      * Função para ir buscar o dialogo para mudar o controlador bluetooth
@@ -362,11 +361,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         title = Html.fromHtml("<font color='#000055'>" + title + "</font>", Html.FROM_HTML_MODE_LEGACY).toString();
         builder.setTitle(title);
         String[] pairedDevices = mBluetoothManager.getpairedDevices();
-
         builder.setItems(pairedDevices, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                // se clicar no null, não faz nada
 
+                if(which == 0 && pairedDevices[0].equals(getResources().getString(R.string.Str_pareado))){
+                    dialog.dismiss();
+                }else{
                     mBluetoothManager.setDeviceName(pairedDevices[which]);
                     deviceName = pairedDevices[which];
                     SharedPreferences.Editor editor = getSharedPreferences(pref_name, MODE_PRIVATE).edit();
@@ -374,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     editor.apply();
                     finish();
                     startActivity(getIntent());
-
+                }
 
             }
         });
@@ -405,6 +407,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // salvar a linguagem escolhida
         SharedPreferences.Editor editor = context.getSharedPreferences(pref_name, MODE_PRIVATE).edit();
         editor.putString("language", languageCode);
+        Uteis.MSG_Log("Linguagem guardada: " + context.getSharedPreferences(pref_name, MODE_PRIVATE).getString("language", "pt"));
         editor.apply();
     }
 

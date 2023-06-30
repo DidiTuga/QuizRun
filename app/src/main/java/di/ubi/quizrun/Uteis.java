@@ -19,11 +19,11 @@ public class Uteis {
     }
 
     public static void MSG_Debug(String txt) {
-        Log.i("DEBUG", txt);
+        //Log.i("DEBUG", txt);
     }
 
     public static void MSG_Log(String txt) {
-        Log.i("INFORX", txt);
+       // Log.i("INFORX", txt);
         //  Categoria -- Depois posso meteter Passo 3 ect
     }
 
