@@ -81,7 +81,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserVH> {
         String pontos = context.getString(R.string.str_pontos) + user.getPontos();
         holder.pontos.setText(pontos);
         //-- AGORA VAI ADICIONAR UMA STRING A DIZER O QUE É ANTES
-        String distancia = context.getString(R.string.Str_distancia) + " " + user.getDistancia() + "km";
+        String distancia = context.getString(R.string.Str_distancia) + " " + user.getDistancia() + "";
         holder.distancia.setText(distancia);
         String tempo = context.getString(R.string.str_tempoDemorado) + " " + user.getTempo();
         holder.tempo.setText(tempo);
